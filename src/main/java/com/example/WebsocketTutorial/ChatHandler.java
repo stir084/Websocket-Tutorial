@@ -1,6 +1,5 @@
 package com.example.WebsocketTutorial;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -29,7 +28,7 @@ public class ChatHandler extends TextWebSocketHandler {
                 isSessionAlive = true;
             }
         }
-        if(isSessionAlive == true){
+        if(isSessionAlive){
             for(WebSocketSession sess: numSet) {
                 sess.sendMessage(message);
             }
