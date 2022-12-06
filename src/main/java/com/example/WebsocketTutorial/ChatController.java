@@ -20,6 +20,8 @@ public class ChatController {
             model.addAttribute("name", "guest");
         }else if(id.equals("master")){
             model.addAttribute("name", "master");
+        }else if(id.equals("loose")){
+            model.addAttribute("name", "loose");
         }else{
             return "error";
         }
