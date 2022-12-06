@@ -1,0 +1,49 @@
+package com.example.WebsocketTutorial;
+
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import java.util.*;
+
+@Component
+@Log4j2
+public class ChatHandler extends TextWebSocketHandler {
+
+    private static LinkedHashSet<WebSocketSession> numSet = new LinkedHashSet<>();
+
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        if(numSet.size()>=3){
+            WebSocketSession oldSession = numSet.iterator().next();
+            oldSession.sendMessage(new TextMessage("채팅이 종료되었습니다."));
+            numSet.remove(numSet.iterator().next());
+        }
+
+        boolean isSessionAlive = false;
+
+        for(WebSocketSession sess: numSet) {
+            if(sess.getId().equals(session.getId())){
+                isSessionAlive = true;
+            }
+        }
+        if(isSessionAlive == true){
+            for(WebSocketSession sess: numSet) {
+                sess.sendMessage(message);
+            }
+        }
+    }
+
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        numSet.add(session);
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        numSet.remove(session);
+    }
+}
