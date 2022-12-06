@@ -10,7 +10,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.*;
 
 @Component
-@Log4j2
 public class ChatHandler extends TextWebSocketHandler {
 
     private static LinkedHashSet<WebSocketSession> numSet = new LinkedHashSet<>();
